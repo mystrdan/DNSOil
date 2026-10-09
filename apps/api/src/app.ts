@@ -11,8 +11,8 @@ export interface AppOptions {
   internalApiSecret?: string;
 }
 
-function secretsMatch(expected: string, provided: string | undefined): boolean {
-  if (!provided) return false;
+function secretsMatch(expected: string, provided: string | string[] | undefined): boolean {
+  if (typeof provided !== "string" || provided.length === 0) return false;
   const expectedBytes = Buffer.from(expected);
   const providedBytes = Buffer.from(provided);
   return expectedBytes.length === providedBytes.length && timingSafeEqual(expectedBytes, providedBytes);
