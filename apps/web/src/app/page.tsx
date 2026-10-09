@@ -16,11 +16,11 @@ export default function HomePage() {
         <p className="eyebrow"><span className="pulse" /> THE DOMAIN WORKSPACE</p>
         <h1>Your domains.<br /><span>One place.</span></h1>
         <p className="intro">Search, register and manage domains through one straightforward dashboard — without juggling registrar accounts.</p>
-        <form className="search" id="domain-search" action="#" onSubmit={undefined}>
+        <div className="search" id="domain-search">
           <label className="srOnly" htmlFor="domain">Search for a domain</label>
           <input id="domain" name="domain" placeholder="yourbrand.com" autoComplete="off" />
-          <button type="button" onClick={() => {}}>Check domain <span aria-hidden="true">→</span></button>
-        </form>
+          <button type="button">Check domain <span aria-hidden="true">→</span></button>
+        </div>
         <p className="note">Early build · Search and checkout are not connected yet.</p>
       </section>
 
