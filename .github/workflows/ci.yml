@@ -46,5 +46,7 @@ jobs:
         run: pnpm --filter @dnsoil/api migrate
       - name: Verify migration repeatability
         run: pnpm --filter @dnsoil/api migrate
+      - name: Test wallet ledger constraints
+        run: pnpm --filter @dnsoil/api test:wallet-ledger
       - name: Build workspaces
         run: pnpm build
