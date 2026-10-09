@@ -64,3 +64,8 @@ footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .searchAction{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:6px;padding:0 17px;background:var(--green);color:#11180e;font-weight:750;font-size:13px;white-space:nowrap}
 .searchAction:hover{filter:brightness(.96)}
 @media(max-width:650px){.searchAction{min-height:44px}}
+
+.search button:disabled{opacity:.65;cursor:wait}
+.domainFeedback{max-width:570px;margin:13px auto 0;padding:13px 15px;border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.6;text-align:left}
+.domainSuccess{color:#d6f7c6;background:#111a11;border-color:#2a4527}
+.domainError{color:#ffc7bd;background:#211311;border-color:#573027}
