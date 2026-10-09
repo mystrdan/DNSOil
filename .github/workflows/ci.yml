@@ -48,6 +48,8 @@ jobs:
         run: pnpm --filter @dnsoil/api migrate
       - name: Test hosting provider sync and ownership
         run: pnpm --filter @dnsoil/api test:hosting
+      - name: Test provider catalogue and 1% fee calculation
+        run: pnpm --filter @dnsoil/api test:catalog
       - name: Test wallet ledger constraints
         run: pnpm --filter @dnsoil/api test:wallet-ledger
       - name: Build workspaces
