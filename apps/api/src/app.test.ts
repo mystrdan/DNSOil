@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import test from "node:test";
 import { buildApp } from "./app.js";
 
@@ -71,7 +72,11 @@ test("wallet endpoint rejects requests without a bearer token", async () => {
 
 test("wallet endpoint reports unavailable when PostgreSQL is not configured", async () => {
   const app = buildApp({ databaseUrl: "", apiTokenSecret: "test-token-secret" });
-  const token = (await import("./test-token.js")).createTestAccessToken("person@example.com", "test-token-secret");
+  const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
+  const now = Math.floor(Date.now() / 1000);
+  const payload = Buffer.from(JSON.stringify({ sub: "person@example.com", iat: now, exp: now + 300 })).toString("base64url");
+  const unsigned = `${header}.${payload}`;
+  const token = `${unsigned}.${createHmac("sha256", "test-token-secret").update(unsigned).digest("base64url")}`;
   const response = await app.inject({
     method: "GET",
     url: "/v1/wallet",
