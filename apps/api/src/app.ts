@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
 import { verifyAccessToken } from "./access-token.js";
+import { registerHostingRoutes } from "./hosting.js";
 import { domainToASCII } from "node:url";
 import { Pool } from "pg";
 
@@ -33,6 +34,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   app.addHook("onClose", async () => {
     await pool?.end();
   });
+
+  registerHostingRoutes(app, pool, apiTokenSecret, internalApiSecret);
 
   app.get("/health", async () => ({
     status: "ok",
