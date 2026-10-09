@@ -32,6 +32,17 @@ The sync endpoint refuses to reassign an existing provider service ID to another
 - Encrypt provider API credentials at rest in a dedicated secret store. Never send provider credentials to browser or mobile clients.
 - Keep provider webhooks authenticated, idempotent and replay-protected. Reconcile periodic snapshots with webhooks.
 
+
+## Provider adapter selection
+
+The next decision is the first hosting partner and its actual control plane. “cPanel hosting” alone is not enough to identify the right integration:
+
+- If the hosting company manages customer accounts and billing through **WHMCS**, evaluate its [official API](https://developers.whmcs.com/api/) first for customer-owned services, product names, status, and renewal metadata. Each WHMCS installation is controlled by that hosting provider; DNSOil still needs an authorized API account and a clear customer-to-provider account mapping.
+- If DNSOil has an authorized reseller/administrator relationship with a cPanel host, the [WHM API](https://api.docs.cpanel.net/whm/introduction) can manage reseller/account operations. cPanel documents [temporary Single Sign On sessions](https://api.docs.cpanel.net/guides/guide-to-api-authentication/guide-to-api-authentication-single-sign-on), which are a better target than storing account passwords.
+- For a Plesk-based host, evaluate the [Plesk REST API](https://docs.plesk.com/en-US/obsidian/api-rpc/about-rest-api.79359/). Access depends on administrator-level authorization and the REST API's supported feature set.
+
+These are candidate integration paths, not connected providers. The selected provider must confirm API access, scope, service ownership mapping, rate limits, sandbox/test facilities, and commercial permission before live sync is enabled.
+
 ## Rollout sequence
 
 1. **Foundation (current):** schema, normalized adapter contract, account-scoped API, trusted sync endpoint, dashboard/demo presentation.
