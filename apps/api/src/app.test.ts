@@ -60,3 +60,24 @@ test("current-user endpoint rejects requests without a bearer token", async () =
   assert.equal(response.json().code, "UNAUTHORIZED");
   await app.close();
 });
+
+test("wallet endpoint rejects requests without a bearer token", async () => {
+  const app = buildApp({ databaseUrl: "", apiTokenSecret: "test-token-secret" });
+  const response = await app.inject({ method: "GET", url: "/v1/wallet" });
+  assert.equal(response.statusCode, 401);
+  assert.equal(response.json().code, "UNAUTHORIZED");
+  await app.close();
+});
+
+test("wallet endpoint reports unavailable when PostgreSQL is not configured", async () => {
+  const app = buildApp({ databaseUrl: "", apiTokenSecret: "test-token-secret" });
+  const token = (await import("./test-token.js")).createTestAccessToken("person@example.com", "test-token-secret");
+  const response = await app.inject({
+    method: "GET",
+    url: "/v1/wallet",
+    headers: { authorization: `Bearer ${token}` },
+  });
+  assert.equal(response.statusCode, 503);
+  assert.equal(response.json().code, "DATABASE_NOT_CONFIGURED");
+  await app.close();
+});
