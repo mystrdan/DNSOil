@@ -109,7 +109,6 @@ export function registerHostingRoutes(
     if (!secretMatches(internalApiSecret, request.headers["x-dnsoil-internal-secret"])) {
       return reply.code(401).send({ code: "UNAUTHORIZED", message: "Valid internal credentials are required." });
     }
-    if (!pool) return reply.code(503).send({ code: "DATABASE_NOT_CONFIGURED", message: "Hosting synchronization requires PostgreSQL." });
 
     const body = request.body ?? {};
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
@@ -139,6 +138,7 @@ export function registerHostingRoutes(
         message: "Provide a valid customer email, provider, service ID, product, status, and safe optional domain, renewal date, and HTTPS control-panel URL.",
       });
     }
+    if (!pool) return reply.code(503).send({ code: "DATABASE_NOT_CONFIGURED", message: "Hosting synchronization requires PostgreSQL." });
 
     try {
       const client = await pool.connect();
