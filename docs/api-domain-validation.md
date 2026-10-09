@@ -12,6 +12,15 @@ Request:
 
 A valid response normalizes the domain to lowercase ASCII (including IDN conversion) and removes one trailing dot. This endpoint validates syntax only: it does **not** check registrar availability, pricing, ownership, or registration eligibility.
 
+The public homepage includes a format-check form that calls the web route `POST /api/domains/validate`, which proxies to the API. It reports valid syntax only and explicitly does not confirm that a domain is available.
+
+## Authenticated account endpoint
+
+- `GET /api/access-token` issues a five-minute bearer token to an authenticated web session when `DNSOIL_API_TOKEN_SECRET` is configured.
+- `GET /v1/me` validates that token and looks up an active account in PostgreSQL.
+- Configure the same dedicated `DNSOIL_API_TOKEN_SECRET` in the web and API server environments. Keep it separate from `DNSOIL_INTERNAL_API_SECRET`.
+- The token endpoint and `/v1/me` are initial authentication primitives; future domain, order, DNS and wallet endpoints must enforce user-scoped authorization too.
+
 ## Readiness
 
 - `GET /health` reports that the process is responding.
