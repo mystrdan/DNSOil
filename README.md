@@ -16,7 +16,7 @@ DNSOil is a multi-registrar domain platform with a mobile app and web dashboard.
 
 ## Repository layout
 
-- `apps/web` — Next.js public homepage, Google sign-in, starter account page, and public dashboard demo
+- `apps/web` — Next.js public homepage, Google sign-in, account dashboard with wallet status panel, and public dashboard demo
 - `apps/mobile` — Expo / React Native starter
 - `apps/api` — Fastify API, domain syntax validation, database readiness, protected user provisioning, short-lived bearer-token verification, and read-only wallet summary
 - `packages/shared` — shared domain and API types
@@ -47,7 +47,7 @@ The demo dashboard is a public, clearly labelled mockup using fictional `.exampl
 
 ## Current status
 
-The workspace foundation and Google sign-in scaffold have been merged into `main`. Google OAuth still requires real client credentials and has not been live-tested. Domain syntax validation and optional PostgreSQL readiness checks are implemented in the API. Persistent Google-user provisioning and short-lived user-scoped API tokens are implemented behind explicit server-side configuration but have not been tested end-to-end. The authenticated `GET /v1/wallet` endpoint now returns the signed-in user's wallet status, ledger-derived balance and recent transactions when PostgreSQL is configured. Wallet funding and spending are deliberately disabled; no top-up, withdrawal, payment or purchase endpoint is live. Migration `0002_wallet_ledger_safety.sql` adds wallet holds and deferred ledger balance/currency checks, but migrations still need validation against PostgreSQL. Domain availability/search, registrar operations and checkout are not live yet.
+The workspace foundation and Google sign-in scaffold have been merged into `main`. Google OAuth still requires real client credentials and has not been live-tested. Domain syntax validation and optional PostgreSQL readiness checks are implemented in the API. Persistent Google-user provisioning and short-lived user-scoped API tokens are implemented behind explicit server-side configuration but have not been tested end-to-end. The authenticated `GET /v1/wallet` endpoint returns the signed-in user's wallet status, ledger-derived balance and recent transactions when PostgreSQL is configured. The signed-in dashboard and public demo both show the wallet as not enabled, with funding unavailable. Wallet funding and spending are deliberately disabled; no top-up, withdrawal, payment or purchase endpoint is live. Migration `0002_wallet_ledger_safety.sql` adds wallet holds and deferred ledger balance/currency checks, but migrations still need validation against PostgreSQL. Domain availability/search, registrar operations and checkout are not live yet.
 
 Openprovider remains the first registrar candidate to evaluate, pending account access, sandbox verification, commercial terms, TLD coverage, and operational testing. Customer wallet deposits must remain disabled until legal/compliance review and payment-provider approval are complete.
 
