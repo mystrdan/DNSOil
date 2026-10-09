@@ -23,6 +23,16 @@ Use an append-only, double-entry ledger. Ledger entries are the financial source
 - Track customer funds, payment-provider clearing, registrar cost/payable, platform revenue, fees and refunds as distinct accounts.
 - Reconcile internal records against payment events and registrar charges/balance reports.
 
+## Current implementation status
+
+- `GET /v1/wallet` is an authenticated, read-only API endpoint. It requires the five-minute bearer token used by `GET /v1/me` and a configured PostgreSQL connection.
+- The endpoint returns the USD account status, a balance calculated from ledger entries, and up to 20 recent ledger transactions. If no USD wallet account exists, it returns a zero balance and `not-created` status without creating an account.
+- Deposits and spending are explicitly reported as disabled. There are no live top-up, withdrawal, capture, refund, or wallet-funded domain-purchase endpoints.
+- Migration `0002_wallet_ledger_safety.sql` adds wallet holds and deferred checks that ledger entries balance and use the wallet account currency. Posted entries are immutable; corrections must use compensating entries.
+- These database safeguards are not considered production-verified until the migration and constraint triggers pass against a disposable PostgreSQL database, including valid balanced entries, unbalanced entries, mixed currencies, duplicate idempotency keys, and attempted ledger edits.
+
+API response amounts use integer minor units as strings (for USD, cents) to avoid precision loss. A missing account is not the same as a funded or active wallet.
+
 ## Wallet top-up lifecycle
 1. Customer selects Add funds and sees amount, currency, fees and terms.
 2. API creates a pending top-up intent with an idempotency key.
