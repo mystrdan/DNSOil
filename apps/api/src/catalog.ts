@@ -135,7 +135,7 @@ export function registerCatalogRoutes(
     const productKey = cleanText(body.productKey, 160) ?? "";
     const productName = cleanText(body.productName, 160) ?? "";
     const rawTld = typeof body.domainTld === "string" ? body.domainTld.trim().toLowerCase().replace(/^\./, "") : null;
-    const termMonths = body.termMonths === undefined ? 12 : body.termMonths;
+    const termMonths = body.termMonths === undefined ? 12 : typeof body.termMonths === "number" ? body.termMonths : Number.NaN;
     const currency = typeof body.currency === "string" ? body.currency.toUpperCase() : "USD";
     const priceRaw = typeof body.basePriceMinor === "string" ? body.basePriceMinor : typeof body.basePriceMinor === "number" ? String(body.basePriceMinor) : "";
     const validUntilRaw = typeof body.validUntil === "string" ? body.validUntil : "";
