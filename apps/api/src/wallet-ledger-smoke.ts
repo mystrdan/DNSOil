@@ -64,6 +64,13 @@ try {
   );
   await client.query("COMMIT");
 
+  const balance = await client.query<{ balance_minor: string }>(
+    `SELECT COALESCE(SUM(CASE WHEN entry_side = 'credit' THEN amount_minor ELSE -amount_minor END), 0)::text AS balance_minor
+     FROM wallet_ledger_entries WHERE ledger_account_id = $1`,
+    [customerLedgerId],
+  );
+  assert.equal(balance.rows[0]?.balance_minor, "100", "customer wallet balance should reflect its liability ledger entries");
+
   // Deferred checks must reject an unbalanced transaction at commit.
   await client.query("BEGIN");
   const invalid = await client.query<{ id: string }>(
