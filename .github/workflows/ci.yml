@@ -24,5 +24,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Typecheck workspaces
         run: pnpm typecheck
+      - name: Test API behavior
+        run: pnpm --filter @dnsoil/api test
       - name: Build workspaces
         run: pnpm build
