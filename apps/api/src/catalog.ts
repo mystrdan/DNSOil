@@ -30,6 +30,23 @@ function safeJsonObject(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 
+const SENSITIVE_METADATA_KEY = /(?:secret|password|credential|api[_-]?key|access[_-]?token|refresh[_-]?token|authorization|cookie|session|private[_-]?key|sso[_-]?url)/i;
+
+function hasSensitiveKey(value: unknown, depth = 0): boolean {
+  if (depth > 8 || value === null || typeof value !== "object") return false;
+  if (Array.isArray(value)) return value.some((item) => hasSensitiveKey(item, depth + 1));
+  return Object.entries(value as Record<string, unknown>).some(([key, child]) =>
+    SENSITIVE_METADATA_KEY.test(key) || hasSensitiveKey(child, depth + 1));
+}
+
+function isBoundedJson(value: Record<string, unknown>): boolean {
+  try {
+    return Buffer.byteLength(JSON.stringify(value), "utf8") <= 16_384;
+  } catch {
+    return false;
+  }
+}
+
 function calculateFee(baseMinor: string): string {
   const base = BigInt(baseMinor);
   return ((base * BigInt(MARKUP_BPS) + 9999n) / 10000n).toString();
@@ -159,7 +176,9 @@ export function registerCatalogRoutes(
       || !CURRENCIES.has(currency) || price === null || price < 0n
       || !validUntilRaw || Number.isNaN(validUntil.getTime()) || validUntil.getTime() <= Date.now()
       || (serviceType === "hosting" && serviceCategory !== "hosting")
-      || (serviceType !== "hosting" && serviceCategory !== "registrar")) {
+      || (serviceType !== "hosting" && serviceCategory !== "registrar")
+      || hasSensitiveKey(capabilities) || hasSensitiveKey(metadata)
+      || !isBoundedJson(capabilities) || !isBoundedJson(metadata)) {
       return reply.code(400).send({
         code: "INVALID_CATALOG_OFFER",
         message: "Offer metadata, provider category, service type, USD price in minor units, term, and future validUntil must be valid.",
