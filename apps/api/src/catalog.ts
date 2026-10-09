@@ -196,7 +196,7 @@ export function registerCatalogRoutes(
         const providerResult = await client.query<{ id: string }>(
           "INSERT INTO provider_catalog_providers (provider_key, display_name, service_category, status, environment, capabilities, last_synced_at) " +
             "VALUES ($1,$2,$3,$4,$5,$6::jsonb,now()) " +
-            "ON CONFLICT (provider_key, environment) DO UPDATE SET display_name = EXCLUDED.display_name, " +
+            "ON CONFLICT (provider_key, service_category, environment) DO UPDATE SET display_name = EXCLUDED.display_name, " +
             "service_category = EXCLUDED.service_category, status = EXCLUDED.status, capabilities = EXCLUDED.capabilities, " +
             "last_synced_at = now(), updated_at = now() WHERE provider_catalog_providers.service_category = EXCLUDED.service_category " +
             "RETURNING id",
