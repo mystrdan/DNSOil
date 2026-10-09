@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "tsx --test src/**/*.test.ts",
     "migrate": "tsx src/migrate.ts",
-    "test:wallet-ledger": "tsx src/wallet-ledger-smoke.ts"
+    "test:wallet-ledger": "tsx src/wallet-ledger-smoke.ts",
+    "test:hosting": "tsx src/hosting-smoke.ts"
   },
   "dependencies": {
     "@dnsoil/shared": "workspace:*",
