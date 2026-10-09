@@ -26,6 +26,7 @@ export default function DemoDashboardPage() {
         <article className="demoStat"><span>Domains</span><strong>3</strong><small>Across connected providers</small></article>
         <article className="demoStat"><span>Renewals in 30 days</span><strong>1</strong><small>One item to review</small></article>
         <article className="demoStat"><span>DNS status</span><strong className="demoHealthy"><i /> Operational</strong><small>Demo status, not a live check</small></article>
+        <article className="demoStat demoWalletStat"><span>DNSOil Wallet</span><strong>Not enabled</strong><small>Funding and spending are disabled</small></article>
       </section>
 
       <section className="demoDomainSection">
