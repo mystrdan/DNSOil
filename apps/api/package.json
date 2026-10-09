@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@dnsoil/shared": "workspace:*",
     "fastify": "^5.12.5"
   },
   "devDependencies": {
