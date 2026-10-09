@@ -1,9 +1,9 @@
 import DomainCheckForm from "./domain-check-form";
 
 const features = [
-  { number: "01", title: "Search domains", copy: "Check availability across connected registrars from one place." },
+  { number: "01", title: "Compare providers", copy: "Choose a registrar or hosting provider based on price, package and renewal terms." },
   { number: "02", title: "Manage in one place", copy: "Keep registrations, renewals and DNS controls together." },
-  { number: "03", title: "Clear pricing", copy: "See provider pricing and DNSOil fees before checkout." },
+  { number: "03", title: "Transparent pricing", copy: "See the provider price, DNSOil’s proposed 1% service fee and the final total before checkout." },
 ];
 
 export default function HomePage() {
@@ -17,7 +17,7 @@ export default function HomePage() {
       <section className="hero">
         <p className="eyebrow"><span className="pulse" /> THE DOMAIN WORKSPACE</p>
         <h1>Your domains.<br /><span>One place.</span></h1>
-        <p className="intro">Search, register and manage domains through one straightforward dashboard — without juggling registrar accounts.</p><a className="homeDemoLink" href="/demo/dashboard">Explore the signed-in dashboard demo <span aria-hidden="true">↗</span></a>
+        <p className="intro">Compare registrars and hosting providers, choose the price and package that suit you, then manage your services from one straightforward dashboard.</p><a className="homeDemoLink" href="/demo/providers">Preview provider comparison and the 1% fee <span aria-hidden="true">↗</span></a>
         <DomainCheckForm />
       </section>
 
@@ -31,7 +31,7 @@ export default function HomePage() {
 
       <section className="status" id="status">
         <div><span className="statusDot" /> Platform status</div>
-        <p>Workspace scaffold is in progress. Registrar integrations, accounts, payments and DNS operations will be added and tested in stages.</p>
+        <p>Provider choice and transparent pricing are being built. Live provider prices, availability checks, checkout, payments and DNS operations will only appear after integrations are verified.</p>
       </section>
 
       <footer><a className="wordmark" href="/"><span className="mark">D</span> DNSOil</a><span>One workspace for every domain.</span><span>© {new Date().getFullYear()} DNSOil</span></footer>
