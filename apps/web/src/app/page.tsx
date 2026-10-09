@@ -11,7 +11,7 @@ export default function HomePage() {
     <main className="shell">
       <nav className="nav">
         <a className="wordmark" href="/" aria-label="DNSOil home"><span className="mark">D</span> DNSOil</a>
-        <div className="navLinks"><a href="#features">Features</a><a href="#status">Platform status</a><a href="/demo/dashboard">View demo</a><a className="navButton" href="/auth/signin">Sign in <span aria-hidden="true">↗</span></a></div>
+        <div className="navLinks"><a href="#features">Features</a><a href="/hosting">Hosting</a><a href="#status">Platform status</a><a href="/demo/dashboard">View demo</a><a className="navButton" href="/auth/signin">Sign in <span aria-hidden="true">↗</span></a></div>
       </nav>
 
       <section className="hero">
