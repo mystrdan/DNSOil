@@ -154,6 +154,10 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
            END), 0)::text AS balance_minor
            FROM wallet_ledger_transactions t
            JOIN wallet_ledger_entries e ON e.transaction_id = t.id
+           JOIN wallet_ledger_accounts la
+             ON la.id = e.ledger_account_id
+            AND la.wallet_account_id = $1
+            AND la.account_key = 'customer_wallet'
            WHERE t.account_id = $1`,
           [account.id],
         ),
@@ -173,7 +177,11 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
              a.currency
            FROM wallet_ledger_transactions t
            JOIN wallet_accounts a ON a.id = t.account_id
-           LEFT JOIN wallet_ledger_entries e ON e.transaction_id = t.id
+           JOIN wallet_ledger_entries e ON e.transaction_id = t.id
+           JOIN wallet_ledger_accounts la
+             ON la.id = e.ledger_account_id
+            AND la.wallet_account_id = $1
+            AND la.account_key = 'customer_wallet'
            WHERE t.account_id = $1
            GROUP BY t.id, a.currency
            ORDER BY t.created_at DESC
