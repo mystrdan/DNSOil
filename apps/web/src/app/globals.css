@@ -34,3 +34,29 @@ footer .wordmark{font-size:14px;color:var(--text)}
 footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:650px){.shell{padding:0 19px}.nav{height:70px}.navLinks{gap:13px}.navLinks>a:not(.navButton){display:none}.navLinks .navButton{padding:10px 11px}.hero{padding:83px 0 74px}.intro{font-size:15px}.search{flex-direction:column}.search button{min-height:44px}.featureGrid{grid-template-columns:1fr}.feature{min-height:0}.feature h2{margin-top:14px}.status{display:block}.status p{margin-top:13px}footer{flex-wrap:wrap}footer>span:nth-child(2){display:none}}
+
+.authShell{min-height:100vh;max-width:1120px;margin:0 auto;padding:28px 30px;display:flex;flex-direction:column;align-items:center}
+.authBrand{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:20px;font-weight:750;letter-spacing:-.04em}
+.authCard{width:100%;max-width:420px;margin:auto 0;padding:38px 34px;background:#111512;border:1px solid var(--line);border-radius:16px;text-align:center}
+.authIcon{display:flex;justify-content:center;margin-bottom:23px}
+.authIcon .mark{width:42px;height:42px;border-radius:12px;font-size:24px}
+.authEyebrow{font-size:10px;font-weight:750;letter-spacing:.16em;color:var(--green);margin:0 0 12px}
+.authTitle{font-size:34px;line-height:1.1;letter-spacing:-.06em;margin:0 0 12px}
+.authDescription{font-size:14px;color:var(--muted);line-height:1.7;margin:0 auto 27px;max-width:310px}
+.googleSignIn{width:100%;min-height:50px;display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid #d8ddd8;border-radius:8px;background:#fff;color:#202522;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s ease}
+.googleSignIn:hover{background:#f0f2f0}
+.googleSignIn:focus-visible,.signOutButton:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.authFinePrint{margin:22px 0 0;color:#78837b;font-size:10px;line-height:1.7}
+.authFooter{font-size:11px;color:#758078;margin:0 0 6px}
+.dashboardShell{max-width:1120px;margin:0 auto;padding:0 30px}
+.dashboardNav{height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.signOutButton{border:1px solid #303831;background:#151a16;color:var(--text);padding:10px 14px;border-radius:7px;font-weight:650;cursor:pointer}
+.dashboardWelcome{max-width:720px;margin:0 auto;padding:110px 0}
+.dashboardWelcome .eyebrow{justify-content:flex-start}
+.dashboardWelcome h1{font-size:clamp(42px,6vw,64px);margin:20px 0}
+.dashboardWelcome .intro{margin:0;max-width:600px}
+.dashboardNotice{display:flex;align-items:flex-start;gap:13px;margin-top:35px;padding:20px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.dashboardNotice .statusDot{margin-top:6px;flex-shrink:0}
+.dashboardNotice strong{font-size:13px}
+.dashboardNotice p{font-size:13px;color:var(--muted);margin:7px 0 0}
+@media(max-width:650px){.authShell{padding:20px}.authCard{padding:30px 22px}.dashboardShell{padding:0 19px}.dashboardNav{height:70px}.dashboardWelcome{padding:78px 0}}
