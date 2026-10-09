@@ -21,6 +21,17 @@ The public homepage includes a format-check form that calls the web route `POST 
 - Configure the same dedicated `DNSOIL_API_TOKEN_SECRET` in the web and API server environments. Keep it separate from `DNSOIL_INTERNAL_API_SECRET`.
 - The token endpoint and `/v1/me` are initial authentication primitives; future domain, order, DNS and wallet endpoints must enforce user-scoped authorization too.
 
+## Wallet summary
+
+`GET /v1/wallet` requires the same short-lived bearer token as `GET /v1/me` and an active user in PostgreSQL.
+
+- Returns wallet status, currency, ledger-derived balance in minor units, and up to 20 recent transactions.
+- If no USD wallet account exists, returns `status: "not-created"` and a zero balance without creating an account.
+- `depositsEnabled` and `spendingEnabled` are always false in this release. No money movement is exposed by this endpoint.
+- Returns `401` for missing/invalid tokens, `503` when auth or PostgreSQL is not configured, and `403` for a missing or inactive user.
+
+See [wallet and payments](wallet-and-payments.md) for ledger and compliance gates.
+
 ## Readiness
 
 - `GET /health` reports that the process is responding.
