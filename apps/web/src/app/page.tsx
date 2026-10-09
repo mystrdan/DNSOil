@@ -9,7 +9,7 @@ export default function HomePage() {
     <main className="shell">
       <nav className="nav">
         <a className="wordmark" href="/" aria-label="DNSOil home"><span className="mark">D</span> DNSOil</a>
-        <div className="navLinks"><a href="#features">Features</a><a href="#status">Platform status</a><a className="navButton" href="#domain-search">Get started <span aria-hidden="true">↗</span></a></div>
+        <div className="navLinks"><a href="#features">Features</a><a href="#status">Platform status</a><a className="navButton" href="/auth/signin">Sign in <span aria-hidden="true">↗</span></a></div>
       </nav>
 
       <section className="hero">
@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="search" id="domain-search">
           <label className="srOnly" htmlFor="domain">Search for a domain</label>
           <input id="domain" name="domain" placeholder="yourbrand.com" autoComplete="off" />
-          <button type="button">Check domain <span aria-hidden="true">→</span></button>
+          <a className="searchAction" href="/auth/signin">Sign in to get started <span aria-hidden="true">→</span></a>
         </div>
         <p className="note">Early build · Search and checkout are not connected yet.</p>
       </section>
@@ -33,7 +33,7 @@ export default function HomePage() {
       </section>
 
       <section className="status" id="status">
-        <div><span className="statusDot" /> Platform foundation</div>
+        <div><span className="statusDot" /> Platform status</div>
         <p>Workspace scaffold is in progress. Registrar integrations, accounts, payments and DNS operations will be added and tested in stages.</p>
       </section>
 
