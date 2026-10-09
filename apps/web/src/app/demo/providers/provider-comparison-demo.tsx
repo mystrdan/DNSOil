@@ -33,7 +33,7 @@ export default function ProviderComparisonDemo() {
   const [selected, setSelected] = useState("reg-a");
   const [sort, setSort] = useState<"price" | "provider">("price");
   const offers = useMemo(() => [...(service === "domains" ? domainOffers : hostingOffers)].sort((a, b) => sort === "price" ? a.baseMinor - b.baseMinor : a.provider.localeCompare(b.provider)), [service, sort]);
-  const selectedOffer = offers.find((offer) => offer.id === selected) ?? offers[0];
+  const selectedOffer = offers.find((offer) => offer.id === selected) ?? offers[0]!;
   const fee = Math.ceil(selectedOffer.baseMinor * 0.01);
 
   function changeService(next: Service) {
