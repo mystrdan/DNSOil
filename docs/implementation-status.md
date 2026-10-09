@@ -28,6 +28,7 @@
 - [x] Add automatic customer-liability ledger-account provisioning and PostgreSQL ledger smoke tests in CI.
 - [x] Add hosting-provider/service schema separate from registrar connections.
 - [x] Add account-scoped `GET /v1/hosting/services` and trusted internal hosting-service sync endpoint.
+- [x] Add PostgreSQL integration smoke coverage for hosting sync, owner-scoped listing, ownership-conflict rejection and control-panel URL validation in CI.
 - [x] Define provider-neutral hosting adapter/capability contract and document control-panel security.
 - [ ] Test migrations and ledger triggers against disposable PostgreSQL.
 - [ ] Add wallet balance/history UI to the authenticated web and mobile apps.
