@@ -100,6 +100,113 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     }
   });
 
+  app.get("/v1/wallet", async (request, reply) => {
+    const authorization = request.headers.authorization;
+    const match = typeof authorization === "string" ? /^Bearer (.+)$/.exec(authorization) : null;
+    if (!apiTokenSecret) {
+      return reply.code(503).send({ code: "API_AUTH_NOT_CONFIGURED", message: "API access authentication is not configured." });
+    }
+    const email = match?.[1] ? verifyAccessToken(match[1], apiTokenSecret) : null;
+    if (!email) {
+      return reply.code(401).send({ code: "UNAUTHORIZED", message: "A valid, unexpired bearer token is required." });
+    }
+    if (!pool) {
+      return reply.code(503).send({ code: "DATABASE_NOT_CONFIGURED", message: "Wallet lookup requires PostgreSQL." });
+    }
+
+    try {
+      const userResult = await pool.query<{ id: string; status: "active" | "suspended" | "closed" }>(
+        "SELECT id, status FROM app_users WHERE email = $1",
+        [email],
+      );
+      const user = userResult.rows[0];
+      if (!user || user.status !== "active") {
+        return reply.code(403).send({ code: "ACCOUNT_NOT_ACTIVE", message: "This DNSOil account is not active." });
+      }
+
+      const accountResult = await pool.query<{
+        id: string;
+        currency: string;
+        status: "disabled" | "active" | "frozen" | "closed";
+      }>(
+        "SELECT id, currency, status FROM wallet_accounts WHERE user_id = $1 AND currency = 'USD'",
+        [user.id],
+      );
+      const account = accountResult.rows[0];
+      if (!account) {
+        return reply.code(200).send({
+          status: "not-created",
+          currency: "USD",
+          balanceMinor: "0",
+          availableMinor: "0",
+          depositsEnabled: false,
+          spendingEnabled: false,
+          transactions: [],
+          note: "Wallet funding and spending are not enabled. No wallet account has been created.",
+        });
+      }
+
+      const [balanceResult, transactionResult] = await Promise.all([
+        pool.query<{ balance_minor: string }>(
+          `SELECT COALESCE(SUM(CASE
+             WHEN e.entry_side = 'credit' THEN e.amount_minor
+             ELSE -e.amount_minor
+           END), 0)::text AS balance_minor
+           FROM wallet_ledger_transactions t
+           JOIN wallet_ledger_entries e ON e.transaction_id = t.id
+           WHERE t.account_id = $1`,
+          [account.id],
+        ),
+        pool.query<{
+          id: string;
+          source_type: string;
+          description: string;
+          created_at: Date;
+          amount_minor: string;
+          currency: string;
+        }>(
+          `SELECT t.id, t.source_type, t.description, t.created_at,
+             COALESCE(SUM(CASE
+               WHEN e.entry_side = 'credit' THEN e.amount_minor
+               ELSE -e.amount_minor
+             END), 0)::text AS amount_minor,
+             a.currency
+           FROM wallet_ledger_transactions t
+           JOIN wallet_accounts a ON a.id = t.account_id
+           LEFT JOIN wallet_ledger_entries e ON e.transaction_id = t.id
+           WHERE t.account_id = $1
+           GROUP BY t.id, a.currency
+           ORDER BY t.created_at DESC
+           LIMIT 20`,
+          [account.id],
+        ),
+      ]);
+
+      const balanceMinor = balanceResult.rows[0]?.balance_minor ?? "0";
+      const active = account.status === "active";
+      return reply.code(200).send({
+        status: account.status,
+        currency: account.currency,
+        balanceMinor,
+        availableMinor: active ? balanceMinor : "0",
+        depositsEnabled: false,
+        spendingEnabled: false,
+        transactions: transactionResult.rows.map((transaction) => ({
+          id: transaction.id,
+          type: transaction.source_type,
+          description: transaction.description,
+          amountMinor: transaction.amount_minor,
+          currency: transaction.currency,
+          createdAt: transaction.created_at,
+        })),
+        note: "Read-only wallet preview. Deposits and spending remain disabled pending compliance approval and payment-provider verification.",
+      });
+    } catch (error) {
+      request.log.error({ err: error }, "Unable to load DNSOil wallet");
+      return reply.code(500).send({ code: "WALLET_LOOKUP_FAILED", message: "The wallet could not be loaded." });
+    }
+  });
+
   app.post<{ Body: { domain?: unknown } }>("/v1/domains/validate", async (request, reply) => {
     const input = request.body?.domain;
     if (typeof input !== "string" || input.trim().length === 0 || input.length > 253) {
