@@ -19,13 +19,14 @@
 - [ ] Run migrations against a disposable PostgreSQL instance and verify repeatability.
 - [ ] Add Google OAuth credentials to local/deployment environment and verify live callback.
 - [x] Provision verified Google users into PostgreSQL when internal API configuration is enabled.
-- [ ] Add user-scoped API authorization; internal provisioning credentials are server-to-server only.
+- [x] Add short-lived signed API access tokens and a PostgreSQL-backed `GET /v1/me` endpoint.
+- [ ] Apply user-scoped authorization to future domain, order, DNS, and wallet endpoints.
 - [ ] Extend authentication to mobile.
 - [ ] Add live domain availability through a verified registrar sandbox.
 - [ ] Add registrar adapter sandbox tests.
 - [ ] Select and verify payment provider before checkout.
 - [ ] Keep wallet deposits disabled until legal/compliance approval.
 
-Domain validation checks syntax only; it does not query registrar availability, pricing, ownership or registration eligibility. Google user provisioning is implemented but remains inactive unless both server-side internal API settings are configured; it has not been verified against a live OAuth provider and PostgreSQL instance. No domain registration, payment, wallet deposit or DNS mutation is live. The migration runner is implemented but has not been tested against a live or disposable PostgreSQL instance yet.
+Domain validation checks syntax only; it does not query registrar availability, pricing, ownership or registration eligibility. Google user provisioning is implemented but remains inactive unless both server-side internal API settings are configured; short-lived API token issuance and verification are implemented but have not been verified end-to-end against a live OAuth provider and PostgreSQL instance. No domain registration, payment, wallet deposit or DNS mutation is live. The migration runner is implemented but has not been tested against a live or disposable PostgreSQL instance yet.
 
 See [Google sign-in setup](google-sign-in.md) and [API validation/readiness](api-domain-validation.md).
