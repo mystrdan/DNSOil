@@ -1,3 +1,5 @@
+import DomainCheckForm from "./domain-check-form";
+
 const features = [
   { number: "01", title: "Search domains", copy: "Check availability across connected registrars from one place." },
   { number: "02", title: "Manage in one place", copy: "Keep registrations, renewals and DNS controls together." },
@@ -16,12 +18,7 @@ export default function HomePage() {
         <p className="eyebrow"><span className="pulse" /> THE DOMAIN WORKSPACE</p>
         <h1>Your domains.<br /><span>One place.</span></h1>
         <p className="intro">Search, register and manage domains through one straightforward dashboard — without juggling registrar accounts.</p>
-        <div className="search" id="domain-search">
-          <label className="srOnly" htmlFor="domain">Search for a domain</label>
-          <input id="domain" name="domain" placeholder="yourbrand.com" autoComplete="off" />
-          <a className="searchAction" href="/auth/signin">Sign in to get started <span aria-hidden="true">→</span></a>
-        </div>
-        <p className="note">Early build · Search and checkout are not connected yet.</p>
+        <DomainCheckForm />
       </section>
 
       <section className="featureGrid" id="features" aria-label="Platform features">
