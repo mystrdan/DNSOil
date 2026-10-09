@@ -18,7 +18,7 @@ DNSOil is a multi-registrar domain platform with a mobile app and web dashboard.
 
 - `apps/web` — Next.js dashboard, Google sign-in and starter account page
 - `apps/mobile` — Expo / React Native starter
-- `apps/api` — Fastify API, domain syntax validation and database readiness checks
+- `apps/api` — Fastify API, domain syntax validation, database readiness, and protected user provisioning
 - `packages/shared` — shared domain and API types
 - `db/migrations` — PostgreSQL schema migrations
 - `docs/` — architecture, provider evaluation, payments and implementation notes
@@ -35,11 +35,11 @@ pnpm dev:api
 
 The API listens on port `4000` by default. Check `GET /health` for process health and `GET /ready` for database readiness. Configure `DATABASE_URL` to enable the PostgreSQL connectivity check. Validate a domain name with `POST /v1/domains/validate`; this checks syntax only and does not query registrar availability. See [API validation and readiness](docs/api-domain-validation.md).
 
-For the web app, copy `apps/web/.env.example` to `apps/web/.env.local`, set `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET`, then open `/auth/signin`. See [Google sign-in setup](docs/google-sign-in.md). Start web with `pnpm dev:web`; start mobile with `pnpm dev:mobile`.
+For the web app, copy `apps/web/.env.example` to `apps/web/.env.local`, set `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET`, then open `/auth/signin`. To enable persistent Google-user provisioning, configure `DNSOIL_API_URL` and the same high-entropy `DNSOIL_INTERNAL_API_SECRET` in both web and API environments, and apply the database migration first. See [Google sign-in setup](docs/google-sign-in.md) and [user provisioning](docs/user-provisioning.md). Start web with `pnpm dev:web`; start mobile with `pnpm dev:mobile`.
 
 ## Current status
 
-The workspace foundation and Google sign-in scaffold have been merged into `main`. Google OAuth still requires real client credentials and has not been live-tested. Domain syntax validation and optional PostgreSQL readiness checks are implemented in the API. Domain availability/search, persistent user provisioning, registrar operations, checkout and wallet operations are not live yet.
+The workspace foundation and Google sign-in scaffold have been merged into `main`. Google OAuth still requires real client credentials and has not been live-tested. Domain syntax validation and optional PostgreSQL readiness checks are implemented in the API. Persistent Google-user provisioning is implemented behind explicit server-side configuration but has not been tested end-to-end. Domain availability/search, user-scoped API authorization, registrar operations, checkout and wallet operations are not live yet.
 
 Openprovider remains the first registrar candidate to evaluate, pending account access, sandbox verification, commercial terms, TLD coverage, and operational testing. Customer wallet deposits must remain disabled until legal/compliance review and payment-provider approval are complete.
 
