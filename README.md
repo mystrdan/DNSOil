@@ -41,6 +41,7 @@ For the web app, copy `apps/web/.env.example` to `apps/web/.env.local`, set `AUT
 
 - **Public homepage:** [DNSOil on Vercel](https://dnsoil-web.vercel.app/)
 - **Signed-in experience demo:** [Preview the dashboard](https://dnsoil-web.vercel.app/demo/dashboard)
+- **Provider comparison demo:** [Compare registrar and hosting offers](https://dnsoil-web.vercel.app/demo/providers)
 - **Sign-in screen:** [Google sign-in UI](https://dnsoil-web.vercel.app/auth/signin)
 
 The demo dashboard is a public, clearly labelled mockup using fictional `.example` domains. It does not require signing in and does not change real accounts or domains. Vercel deployment protection may require an approved preview/share link for direct access. Real Google sign-in is not ready until OAuth credentials and the required server environment variables are configured.
