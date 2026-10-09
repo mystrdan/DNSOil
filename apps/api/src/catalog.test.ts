@@ -59,3 +59,31 @@ test("catalog sync rejects malformed or expired offer before database access", a
   assert.equal(response.json().code, "INVALID_CATALOG_OFFER");
   await app.close();
 });
+
+test("catalog sync rejects secret-like metadata before database access", async () => {
+  const app = buildApp({ databaseUrl: "", internalApiSecret: "catalog-test-secret" });
+  const response = await app.inject({
+    method: "POST",
+    url: "/v1/internal/catalog/offers/sync",
+    headers: { "x-dnsoil-internal-secret": "catalog-test-secret" },
+    payload: {
+      providerKey: "sample-host",
+      providerName: "Sample Host",
+      serviceCategory: "hosting",
+      providerStatus: "testing",
+      environment: "sandbox",
+      serviceType: "hosting",
+      productKey: "starter",
+      productName: "Starter hosting",
+      termMonths: 1,
+      currency: "USD",
+      basePriceMinor: "1000",
+      available: true,
+      validUntil: new Date(Date.now() + 60_000).toISOString(),
+      metadata: { controlPanel: { password: "must-not-be-stored" } },
+    },
+  });
+  assert.equal(response.statusCode, 400);
+  assert.equal(response.json().code, "INVALID_CATALOG_OFFER");
+  await app.close();
+});
