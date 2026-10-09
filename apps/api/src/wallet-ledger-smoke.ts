@@ -28,6 +28,17 @@ try {
   );
   const accountId = account.rows[0]?.id;
   assert.ok(accountId, "test wallet account should be inserted");
+  const customerLedger = await client.query<{ id: string }>(
+    "SELECT id FROM wallet_ledger_accounts WHERE wallet_account_id = $1 AND account_key = 'customer_wallet' AND currency = 'USD'",
+    [accountId],
+  );
+  const customerLedgerId = customerLedger.rows[0]?.id;
+  assert.ok(customerLedgerId, "customer ledger account should be created automatically");
+  const clearingLedger = await client.query<{ id: string }>(
+    "SELECT id FROM wallet_ledger_accounts WHERE wallet_account_id IS NULL AND account_key = 'payment_clearing' AND currency = 'USD'",
+  );
+  const clearingLedgerId = clearingLedger.rows[0]?.id;
+  assert.ok(clearingLedgerId, "system payment-clearing ledger account should exist");
   await client.query("COMMIT");
 
   // A balanced debit/credit pair in one currency must commit.
@@ -41,15 +52,15 @@ try {
   assert.ok(validTransactionId, "ledger transaction should be inserted");
 
   const debit = await client.query<{ id: string }>(
-    `INSERT INTO wallet_ledger_entries (transaction_id, entry_side, amount_minor, currency)
-     VALUES ($1, 'debit', 100, 'USD') RETURNING id`,
-    [validTransactionId],
+    `INSERT INTO wallet_ledger_entries (transaction_id, ledger_account_id, entry_side, amount_minor, currency)
+     VALUES ($1, $2, 'debit', 100, 'USD') RETURNING id`,
+    [validTransactionId, clearingLedgerId],
   );
   validEntryId = debit.rows[0]?.id;
   await client.query(
-    `INSERT INTO wallet_ledger_entries (transaction_id, entry_side, amount_minor, currency)
-     VALUES ($1, 'credit', 100, 'USD')`,
-    [validTransactionId],
+    `INSERT INTO wallet_ledger_entries (transaction_id, ledger_account_id, entry_side, amount_minor, currency)
+     VALUES ($1, $2, 'credit', 100, 'USD')`,
+    [validTransactionId, customerLedgerId],
   );
   await client.query("COMMIT");
 
@@ -61,9 +72,9 @@ try {
     [accountId, `unbalanced-${suffix}`],
   );
   await client.query(
-    `INSERT INTO wallet_ledger_entries (transaction_id, entry_side, amount_minor, currency)
-     VALUES ($1, 'debit', 100, 'USD')`,
-    [invalid.rows[0]?.id],
+    `INSERT INTO wallet_ledger_entries (transaction_id, ledger_account_id, entry_side, amount_minor, currency)
+     VALUES ($1, $2, 'debit', 100, 'USD')`,
+    [invalid.rows[0]?.id, clearingLedgerId],
   );
   await assert.rejects(client.query("COMMIT"), /balanced debit and credit entries/);
   await client.query("ROLLBACK");
@@ -91,14 +102,14 @@ try {
     [accountId, `mixed-${suffix}`],
   );
   await client.query(
-    `INSERT INTO wallet_ledger_entries (transaction_id, entry_side, amount_minor, currency)
-     VALUES ($1, 'debit', 100, 'USD')`,
-    [mixed.rows[0]?.id],
+    `INSERT INTO wallet_ledger_entries (transaction_id, ledger_account_id, entry_side, amount_minor, currency)
+     VALUES ($1, $2, 'debit', 100, 'USD')`,
+    [mixed.rows[0]?.id, clearingLedgerId],
   );
   await client.query(
-    `INSERT INTO wallet_ledger_entries (transaction_id, entry_side, amount_minor, currency)
-     VALUES ($1, 'credit', 100, 'EUR')`,
-    [mixed.rows[0]?.id],
+    `INSERT INTO wallet_ledger_entries (transaction_id, ledger_account_id, entry_side, amount_minor, currency)
+     VALUES ($1, $2, 'credit', 100, 'EUR')`,
+    [mixed.rows[0]?.id, customerLedgerId],
   );
   await assert.rejects(client.query("COMMIT"), /currency|balanced debit and credit entries/i);
   await client.query("ROLLBACK");
