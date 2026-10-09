@@ -11,7 +11,7 @@ CREATE TABLE provider_catalog_providers (
   last_synced_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE(provider_key, environment)
+  UNIQUE(provider_key, service_category, environment)
 );
 
 CREATE TABLE provider_catalog_offers (
