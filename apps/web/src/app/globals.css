@@ -106,3 +106,17 @@ footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .demoMore{font-size:22px;color:var(--muted);letter-spacing:2px}
 .demoDisclaimer{font-size:11px;line-height:1.6;color:#7f8a81;margin-top:14px}
 @media(max-width:650px){.navLinks{gap:10px}.navLinks>a[href="/demo/dashboard"]{display:none}.homeDemoLink{font-size:11px}.demoBanner{margin-top:12px}.demoWelcome{display:block;padding:54px 0 25px}.demoPrimaryButton{margin-top:22px}.demoStats{grid-template-columns:1fr}.demoStat{padding:17px}.demoStat strong{font-size:25px}.demoDomainSection{padding:36px 0 45px}.demoSectionHeading{align-items:flex-start;flex-direction:column}.demoTable th,.demoTable td{padding:13px}.demoNav{gap:9px}.demoNav .signOutButton{padding:8px 10px}}
+
+.walletPanel{margin-top:28px;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.walletPanelHeading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.walletPanelHeading .eyebrow{justify-content:flex-start;margin:0 0 9px}
+.walletPanelHeading h2{margin:0;font-size:21px;letter-spacing:-.04em}
+.walletStatus{display:inline-flex;align-items:center;padding:6px 9px;border:1px solid #59482b;border-radius:5px;background:#201b12;color:#f0d5a2;font-size:10px;font-weight:700}
+.walletBalance{margin:25px 0 9px;font-size:38px;font-weight:750;letter-spacing:-.06em}
+.walletBalance span{font-size:14px;color:var(--muted);letter-spacing:0}
+.walletDescription{max-width:500px;margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+.walletPanelFooter{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:23px;padding-top:18px;border-top:1px solid var(--line);color:#8d998f;font-size:11px}
+.walletPanelFooter button{border:1px solid #303831;border-radius:7px;padding:10px 13px;background:#171b18;color:#7e887f;font-size:11px;font-weight:700;cursor:not-allowed}
+.demoWalletStat strong{font-size:18px;letter-spacing:-.03em;color:#f0d5a2}
+@media(min-width:900px){.demoStats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){.walletPanel{padding:19px}.walletPanelFooter{align-items:flex-start;flex-direction:column}.walletPanelFooter button{width:100%;min-height:40px}}
