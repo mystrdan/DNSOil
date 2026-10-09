@@ -39,6 +39,7 @@ export default function DomainCheckForm() {
   const [domain, setDomain] = useState("");
   const [result, setResult] = useState<ValidationResult | null>(null);
   const [offers, setOffers] = useState<CatalogOffer[]>([]);
+  const [renewalOffers, setRenewalOffers] = useState<CatalogOffer[]>([]);
   const [catalogNote, setCatalogNote] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ export default function DomainCheckForm() {
     setLoading(true);
     setResult(null);
     setOffers([]);
+    setRenewalOffers([]);
     setCatalogNote("");
     setSelectedProvider("");
     setError("");
@@ -69,11 +71,16 @@ export default function DomainCheckForm() {
       setDomain(normalizedDomain);
       const tld = normalizedDomain.split(".").at(-1) ?? "";
       try {
-        const catalogResponse = await fetch(`/api/catalog/offers?serviceType=domain-registration&tld=${encodeURIComponent(tld)}&currency=USD`, { cache: "no-store" });
+        const [catalogResponse, renewalResponse] = await Promise.all([
+          fetch(`/api/catalog/offers?serviceType=domain-registration&tld=${encodeURIComponent(tld)}&currency=USD`, { cache: "no-store" }),
+          fetch(`/api/catalog/offers?serviceType=domain-renewal&tld=${encodeURIComponent(tld)}&currency=USD`, { cache: "no-store" }),
+        ]);
         const catalog = (await catalogResponse.json()) as CatalogResult;
+        const renewalCatalog = (await renewalResponse.json()) as CatalogResult;
         if (!catalogResponse.ok) setCatalogNote(catalog.message ?? "Provider catalog is temporarily unavailable.");
         else {
           setOffers(catalog.offers ?? []);
+          setRenewalOffers(renewalResponse.ok ? renewalCatalog.offers ?? [] : []);
           setCatalogNote(catalog.note ?? "");
         }
       } catch {
@@ -125,6 +132,10 @@ export default function DomainCheckForm() {
                     <span>Provider: {money(offer.providerPriceMinor, offer.currency)}</span>
                     <span>DNSOil fee: {money(offer.dnsoilFeeMinor, offer.currency)}</span>
                     <span>Price expires: {new Date(offer.priceValidUntil).toLocaleDateString()}</span>
+                    {(() => {
+                      const renewal = renewalOffers.find((item) => item.provider.key === offer.provider.key);
+                      return renewal ? <span>Renewal ({term(renewal.termMonths)}): {money(renewal.totalPriceMinor, renewal.currency)}</span> : null;
+                    })()}
                   </div>
                   <button type="button" className="providerSelectButton" onClick={() => setSelectedProvider(offer.id)}>
                     {selectedProvider === offer.id ? "Selected" : "Choose provider"}
