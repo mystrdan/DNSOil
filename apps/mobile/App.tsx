@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   serviceCard: { padding: 19, borderWidth: 1, borderColor: "#252b27", borderRadius: 12, backgroundColor: "#121614", marginBottom: 14 },
   cardHeader: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
   cardEyebrow: { color: "#a5f078", fontSize: 10, fontWeight: "700", letterSpacing: 1.5, marginBottom: 8 },
-  cardTitle: { color: "#f1f5f1", fontSize: 19, fontWeight: "750" },
+  cardTitle: { color: "#f1f5f1", fontSize: 19, fontWeight: "700" },
   status: { color: "#f0d5a2", backgroundColor: "#201b12", borderColor: "#59482b", borderWidth: 1, borderRadius: 5, paddingHorizontal: 8, paddingVertical: 6, fontSize: 10, overflow: "hidden" },
   cardCopy: { color: "#9ba69d", fontSize: 12, lineHeight: 20, marginTop: 17 },
   securityNote: { marginTop: 17, padding: 13, borderWidth: 1, borderColor: "#2b342d", borderRadius: 8, backgroundColor: "#101411" },
