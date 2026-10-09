@@ -69,3 +69,40 @@ footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .domainFeedback{max-width:570px;margin:13px auto 0;padding:13px 15px;border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.6;text-align:left}
 .domainSuccess{color:#d6f7c6;background:#111a11;border-color:#2a4527}
 .domainError{color:#ffc7bd;background:#211311;border-color:#573027}
+
+.homeDemoLink{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:12px;font-weight:700;color:var(--green)}
+.homeDemoLink:hover{text-decoration:underline;text-underline-offset:4px}
+.authFooter a{color:var(--green);font-weight:700}
+.demoShell{padding-bottom:10px}
+.demoBanner{margin:18px 0 0;padding:11px 14px;border:1px solid #38492f;background:#141b12;border-radius:8px;color:#b7c2b8;font-size:12px;line-height:1.6}
+.demoBanner span{display:inline-block;margin-right:9px;padding:4px 6px;border-radius:4px;background:var(--green);color:#11180e;font-size:9px;font-weight:900;letter-spacing:.08em}
+.demoNav{display:flex;align-items:center;gap:18px;font-size:12px;color:var(--muted)}
+.demoWelcome{display:flex;align-items:flex-end;justify-content:space-between;gap:25px;padding:65px 0 32px}
+.demoWelcome .eyebrow{justify-content:flex-start}
+.demoWelcome h1{font-size:clamp(38px,5vw,56px);margin:18px 0 12px}
+.demoWelcome .intro{margin:0;max-width:580px;text-align:left;font-size:14px}
+.demoPrimaryButton{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 15px;border-radius:7px;background:var(--green);color:#11180e;font-size:12px;font-weight:800;white-space:nowrap}
+.demoPill{margin-left:7px;padding:4px 6px;border:1px solid #40543a;border-radius:4px;font-size:9px;letter-spacing:.08em}
+.demoStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.demoStat{display:flex;flex-direction:column;gap:12px;padding:21px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.demoStat>span{font-size:12px;color:var(--muted)}
+.demoStat strong{font-size:30px;letter-spacing:-.04em}
+.demoStat small{font-size:11px;color:#7f8a81}
+.demoStat .demoHealthy{display:flex;align-items:center;gap:8px;font-size:17px;letter-spacing:-.02em}
+.demoHealthy i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green)}
+.demoDomainSection{padding:47px 0 60px}
+.demoSectionHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+.demoSectionHeading .eyebrow{justify-content:flex-start;margin:0 0 8px}
+.demoSectionHeading h2{font-size:23px;letter-spacing:-.04em;margin:0}
+.demoCount{font-size:9px;letter-spacing:.1em;color:var(--muted)}
+.demoTableWrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.demoTable{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+.demoTable th{padding:14px 17px;background:#141815;color:#7f8a81;font-size:10px;font-weight:650}
+.demoTable td{padding:16px 17px;border-top:1px solid var(--line);font-size:12px;color:#c7d0c8}
+.demoTable td strong{display:block;color:var(--text);font-size:12px}
+.demoTable td small{display:block;margin-top:5px;color:#778178;font-size:10px}
+.domainStatus{display:inline-block;padding:5px 8px;border:1px solid #30462b;border-radius:5px;color:#c6f0b4;background:#151d12;font-size:10px}
+.domainStatusWarn{border-color:#59482a;color:#f0d5a2;background:#201b12}
+.demoMore{font-size:22px;color:var(--muted);letter-spacing:2px}
+.demoDisclaimer{font-size:11px;line-height:1.6;color:#7f8a81;margin-top:14px}
+@media(max-width:650px){.navLinks{gap:10px}.navLinks>a[href="/demo/dashboard"]{display:none}.homeDemoLink{font-size:11px}.demoBanner{margin-top:12px}.demoWelcome{display:block;padding:54px 0 25px}.demoPrimaryButton{margin-top:22px}.demoStats{grid-template-columns:1fr}.demoStat{padding:17px}.demoStat strong{font-size:25px}.demoDomainSection{padding:36px 0 45px}.demoSectionHeading{align-items:flex-start;flex-direction:column}.demoTable th,.demoTable td{padding:13px}.demoNav{gap:9px}.demoNav .signOutButton{padding:8px 10px}}
