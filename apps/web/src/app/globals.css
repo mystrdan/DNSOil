@@ -60,3 +60,7 @@ footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .dashboardNotice strong{font-size:13px}
 .dashboardNotice p{font-size:13px;color:var(--muted);margin:7px 0 0}
 @media(max-width:650px){.authShell{padding:20px}.authCard{padding:30px 22px}.dashboardShell{padding:0 19px}.dashboardNav{height:70px}.dashboardWelcome{padding:78px 0}}
+
+.searchAction{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:6px;padding:0 17px;background:var(--green);color:#11180e;font-weight:750;font-size:13px;white-space:nowrap}
+.searchAction:hover{filter:brightness(.96)}
+@media(max-width:650px){.searchAction{min-height:44px}}
