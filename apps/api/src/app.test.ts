@@ -27,3 +27,28 @@ test("readiness reports database as not configured without claiming it is ready"
   assert.equal(response.json().status, "degraded");
   await app.close();
 });
+
+test("user provisioning rejects requests without the internal secret", async () => {
+  const app = buildApp({ databaseUrl: "", internalApiSecret: "test-secret" });
+  const response = await app.inject({
+    method: "POST",
+    url: "/v1/internal/users/provision",
+    payload: { email: "person@example.com", displayName: "Person" },
+  });
+  assert.equal(response.statusCode, 401);
+  assert.equal(response.json().code, "UNAUTHORIZED");
+  await app.close();
+});
+
+test("user provisioning reports unavailable when PostgreSQL is not configured", async () => {
+  const app = buildApp({ databaseUrl: "", internalApiSecret: "test-secret" });
+  const response = await app.inject({
+    method: "POST",
+    url: "/v1/internal/users/provision",
+    headers: { "x-dnsoil-internal-secret": "test-secret" },
+    payload: { email: "person@example.com", displayName: "Person" },
+  });
+  assert.equal(response.statusCode, 503);
+  assert.equal(response.json().code, "DATABASE_NOT_CONFIGURED");
+  await app.close();
+});
