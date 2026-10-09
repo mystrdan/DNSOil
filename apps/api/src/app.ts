@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
 import { verifyAccessToken } from "./access-token.js";
 import { registerHostingRoutes } from "./hosting.js";
+import { registerCatalogRoutes } from "./catalog.js";
 import { registerMarketplaceRoutes } from "./marketplace.js";
 import { domainToASCII } from "node:url";
 import { Pool } from "pg";
@@ -37,6 +38,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   });
 
   registerHostingRoutes(app, pool, apiTokenSecret, internalApiSecret);
+  registerCatalogRoutes(app, pool, internalApiSecret);
   registerMarketplaceRoutes(app, pool, internalApiSecret);
 
   app.get("/health", async () => ({
