@@ -9,8 +9,10 @@
 - [x] Expo / React Native mobile starter screen.
 - [x] Shared domain and API response contracts.
 - [x] Initial PostgreSQL schema migration.
+- [x] Local PostgreSQL Docker Compose service.
+- [x] CI workflow for typecheck and build.
+- [ ] Generate and commit pnpm lockfile after running installs in a build environment.
 - [ ] Database connection, migration runner and integration tests.
-- [ ] Linting, formatting, CI and dependency lockfile.
 - [ ] Authentication and authorization.
 - [ ] Registrar adapter interface and sandbox tests.
 - [ ] Select and verify payment provider before checkout.
