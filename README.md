@@ -33,7 +33,7 @@ docker compose up -d postgres
 pnpm dev:api
 ```
 
-The API listens on port `4000` by default. Check `GET /health` for process health and `GET /ready` for database readiness. Configure `DATABASE_URL` to enable the PostgreSQL connectivity check. Validate a domain name with `POST /v1/domains/validate`; this checks syntax only and does not query registrar availability. See [API validation and readiness](docs/api-domain-validation.md).
+The API listens on port `4000` by default. Check `GET /health` for process health and `GET /ready` for database readiness. Configure `DATABASE_URL` to enable PostgreSQL checks. The homepage domain form checks syntax only through `POST /v1/domains/validate`; it does not query registrar availability. See [API validation and readiness](docs/api-domain-validation.md).
 
 For the web app, copy `apps/web/.env.example` to `apps/web/.env.local`, set `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET`, then open `/auth/signin`. To enable persistent Google-user provisioning, configure `DNSOIL_API_URL` and the same high-entropy `DNSOIL_INTERNAL_API_SECRET` in both web and API environments, and apply the database migration first. To enable short-lived API bearer tokens, configure a separate `DNSOIL_API_TOKEN_SECRET` in both environments. See [Google sign-in setup](docs/google-sign-in.md) and [user provisioning](docs/user-provisioning.md). Start web with `pnpm dev:web`; start mobile with `pnpm dev:mobile`.
 
