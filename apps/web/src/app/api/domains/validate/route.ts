@@ -1,6 +1,31 @@
+import { domainToASCII } from "node:url";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
+
+const DOMAIN_LABEL = /^(?!-)[a-z0-9-]{1,63}(?<!-)$/;
+const TOP_LEVEL_LABEL = /^(?:[a-z]{2,63}|xn--[a-z0-9-]{2,59})$/;
+
+function validateSyntax(input: unknown) {
+  if (typeof input !== "string" || input.trim().length === 0 || input.length > 253) {
+    return {
+      status: 400,
+      body: { code: "INVALID_DOMAIN", message: "Provide a domain name containing 1 to 253 characters." },
+    };
+  }
+  const ascii = domainToASCII(input.trim().replace(/\.$/, "")).toLowerCase();
+  const labels = ascii.split(".");
+  const valid = ascii.length > 0 && ascii.length <= 253 && labels.length >= 2
+    && labels.every((label) => DOMAIN_LABEL.test(label))
+    && TOP_LEVEL_LABEL.test(labels[labels.length - 1] ?? "");
+  if (!valid) {
+    return { status: 422, body: { code: "INVALID_DOMAIN", message: "Enter a valid domain name, such as example.com." } };
+  }
+  return {
+    status: 200,
+    body: { domain: ascii, valid: true, note: "Syntax only; this does not check availability or ownership." },
+  };
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -14,7 +39,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ code: "INVALID_DOMAIN", message: "Provide a domain name." }, { status: 400 });
   }
 
-  const apiUrl = process.env.DNSOIL_API_URL ?? "http://localhost:4000";
+  const apiUrl = process.env.DNSOIL_API_URL;
+  if (!apiUrl) {
+    // Keep Vercel previews functional without requiring a separately deployed API.
+    const result = validateSyntax((body as { domain: unknown }).domain);
+    return NextResponse.json(result.body, { status: result.status, headers: { "Cache-Control": "no-store" } });
+  }
+
   try {
     const response = await fetch(new URL("/v1/domains/validate", apiUrl), {
       method: "POST",
