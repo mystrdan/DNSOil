@@ -19,7 +19,7 @@ export default async function SignInPage() {
         <GoogleSignInButton />
         <p className="authFinePrint">By continuing, you agree to use DNSOil in accordance with our terms and privacy policy.</p>
       </section>
-      <p className="authFooter">Domains. DNS. One platform.</p>
+      <p className="authFooter">Want to look around first? <a href="/demo/dashboard">View the dashboard demo</a></p><p className="authFooter">Domains. DNS. One platform.</p>
     </main>
   );
 }
