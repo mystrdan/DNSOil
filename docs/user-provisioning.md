@@ -8,7 +8,8 @@ DNSOil provisions a database account after Google verifies the user's email, pro
 2. Generate a long random secret for server-to-server authentication. For example, use `openssl rand -hex 32`.
 3. Set `DNSOIL_INTERNAL_API_SECRET` to the same secret in the API environment and the web app's server-side environment.
 4. Set `DNSOIL_API_URL` in the web app to the private/reachable base URL of the Fastify API, such as `http://localhost:4000` for local development.
-5. Configure Google OAuth using the instructions in [Google sign-in setup](google-sign-in.md).
+5. Set a second, independent `DNSOIL_API_TOKEN_SECRET` in both web and API environments. This key signs short-lived API access tokens; do not reuse the internal provisioning secret.
+6. Configure Google OAuth using the instructions in [Google sign-in setup](google-sign-in.md).
 
 Do not prefix the secret with `NEXT_PUBLIC_`, commit it, or expose it to browser code. Use TLS when the web app communicates with a remotely hosted API. Keep the API endpoint private where possible and rotate the shared secret if it may have been exposed.
 
@@ -22,4 +23,4 @@ Do not prefix the secret with `NEXT_PUBLIC_`, commit it, or expose it to browser
 - If provisioning is enabled but the API/database call fails, sign-in fails closed.
 - If neither internal setting is configured, the OAuth scaffold remains usable without persistent provisioning. This is development scaffolding, not production-ready account persistence.
 
-The endpoint does not accept browser credentials and is not a substitute for user-scoped API authorization. The next authentication milestone is to issue and verify user-scoped API access rather than treating the internal provisioning secret as a user token.
+The internal endpoint does not accept browser credentials and is not a substitute for user-scoped API authorization. The web app can issue five-minute bearer tokens at `GET /api/access-token` for a signed-in session. The API validates signatures and expiry at `GET /v1/me`, then looks up the active account in PostgreSQL. The API token signing key is separate from the provisioning secret. These are the first authenticated API primitives; domain-management endpoints still need to apply the same user identity checks before they are added.
