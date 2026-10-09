@@ -39,8 +39,10 @@ ON CONFLICT DO NOTHING;
 ALTER TABLE wallet_ledger_entries
   ADD COLUMN ledger_account_id uuid REFERENCES wallet_ledger_accounts(id);
 
--- Preserve pre-existing rows during migration. New ledger writers must always specify
--- the actual customer or system ledger account on every entry.
+-- Preserve pre-existing rows during migration. The schema migration must assign an
+-- account reference to historical entries before immutability is re-enabled.
+DROP TRIGGER IF EXISTS wallet_ledger_entries_immutable ON wallet_ledger_entries;
+
 UPDATE wallet_ledger_entries e
 SET ledger_account_id = la.id
 FROM wallet_ledger_transactions t
@@ -52,6 +54,10 @@ WHERE e.transaction_id = t.id
 
 ALTER TABLE wallet_ledger_entries
   ALTER COLUMN ledger_account_id SET NOT NULL;
+
+CREATE TRIGGER wallet_ledger_entries_immutable
+BEFORE UPDATE OR DELETE ON wallet_ledger_entries
+FOR EACH ROW EXECUTE FUNCTION dnsoil_prevent_wallet_entry_mutation();
 
 CREATE OR REPLACE FUNCTION dnsoil_assert_wallet_transaction_balanced()
 RETURNS trigger
