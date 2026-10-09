@@ -1,10 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, TextInput, Pressable, View } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, Text, TextInput, Pressable, View } from "react-native";
 
 export default function App() {
   return (
     <SafeAreaView style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar barStyle="light-content" />
       <View style={styles.nav}>
         <View style={styles.mark}><Text style={styles.markText}>D</Text></View>
         <Text style={styles.brand}>DNSOil</Text>
