@@ -54,8 +54,8 @@ async function main() {
   assert.equal(offer.attributes.privacyIncluded, true);
 
   await syncOffer({
-    providerKey: providerKey + "-stale",
-    providerName: "Stale Smoke Provider",
+    providerKey: providerKey + "-hidden",
+    providerName: "Unavailable Smoke Provider",
     serviceCategory: "registrar",
     providerStatus: "active",
     environment: "production",
@@ -66,14 +66,17 @@ async function main() {
     termMonths: 12,
     currency: "USD",
     basePriceMinor: "500",
-    available: true,
-    validUntil: new Date(Date.now() - 60 * 1000).toISOString(),
-  }).catch((error) => {
-    // Expired prices are rejected at sync time, which is preferable to storing stale pricing.
-    if (!(error instanceof assert.AssertionError)) throw error;
+    available: false,
+    validUntil: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
   });
+  const filtered = await app.inject({
+    method: "GET",
+    url: "/v1/catalog/offers?serviceType=domain-registration&tld=com",
+  });
+  assert.equal(filtered.statusCode, 200, filtered.body);
+  assert.equal(filtered.json().offers.some((item: { provider: { key: string } }) => item.provider.key === providerKey + "-hidden"), false);
 
-  console.info("Catalog smoke test passed: provider offer sync, fresh-price filtering, and integer-minor-unit 1% fee calculation.");
+  console.info("Catalog smoke test passed: provider offer sync, unavailable-offer filtering, and integer-minor-unit 1% fee calculation.");
 }
 
 try {
