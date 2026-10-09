@@ -134,3 +134,45 @@ footer .mark{width:23px;height:23px;font-size:14px;border-radius:6px}
 .hostingComingSoon{color:#b7c2b8}
 .hostingDemoSection{padding-top:15px}
 @media(max-width:650px){.hostingPanel{padding:19px}.hostingPanelHeading{align-items:flex-start;flex-direction:column}.hostingPanelFooter{align-items:flex-start;flex-direction:column}.hostingSecurityNote{padding:14px}.hostingDemoSection{padding-top:0}}
+
+.providerComparison,.marketplaceResults{margin:28px auto 0;max-width:760px;text-align:left;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.comparisonHeading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:17px}
+.comparisonHeading .eyebrow{justify-content:flex-start;margin:0 0 8px}
+.comparisonHeading h2{margin:0;font-size:22px;letter-spacing:-.04em}
+.quoteBadge{border:1px solid #344c32;background:#172318;color:var(--green);border-radius:5px;padding:6px 9px;font-size:10px;font-weight:700;white-space:nowrap}
+.comparisonIntro{font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 17px}
+.providerQuoteList{display:grid;gap:10px}
+.providerQuote{border:1px solid #303831;border-radius:9px;padding:16px;background:#0f1310}
+.selectedQuote{border-color:var(--green)}
+.providerQuoteTop{display:flex;justify-content:space-between;gap:15px}
+.providerQuoteTop>div:first-child{display:flex;flex-direction:column;gap:6px}
+.providerQuoteTop strong{font-size:14px}
+.providerQuoteTop span,.providerPrice span{font-size:10px;color:var(--muted)}
+.providerPrice{text-align:right;display:flex;flex-direction:column;gap:6px}
+.providerPrice strong{font-size:20px;letter-spacing:-.04em}
+.providerQuoteDetails{display:flex;flex-wrap:wrap;gap:8px 16px;padding-top:13px;margin-top:13px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
+.providerSelectButton{margin-top:15px;border:1px solid #455340;background:#1a2819;color:var(--green);border-radius:6px;padding:10px 12px;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.providerSelectButton:disabled{cursor:not-allowed;opacity:.55}
+.selectionNotice{font-size:11px;line-height:1.7;color:var(--muted);margin:10px 0 0}
+.noProviderQuotes{border:1px dashed #354036;border-radius:9px;padding:22px;background:#0f1310}
+.noProviderQuotes strong{font-size:14px}
+.noProviderQuotes p{font-size:12px;line-height:1.7;color:var(--muted);margin:10px 0}
+.noProviderQuotes>span{font-size:11px;line-height:1.7;color:#7d897f}
+.marketplaceShell .marketplaceHero{max-width:760px;margin:0 auto;text-align:center;padding:92px 0 62px}
+.marketplaceHero h1{font-size:clamp(48px,7vw,76px)}
+.marketplaceFeeNote{margin:24px 0 0;color:var(--green);font-size:12px;font-weight:700}
+.marketplaceResults{max-width:none;margin:0 auto 90px;padding:26px}
+.hostingOfferGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hostingOffer{min-width:0;padding:20px;border:1px solid #303831;border-radius:10px;background:#0f1310}
+.offerProvider{margin:0 0 12px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.hostingOffer h3{font-size:19px;letter-spacing:-.04em;margin:0}
+.offerPlan{font-size:12px;color:var(--muted);margin:7px 0}
+.offerPrice{font-size:27px;font-weight:800;letter-spacing:-.05em;margin:22px 0 6px}
+.offerPrice span{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:0}
+.offerPriceBreakdown{font-size:10px;color:var(--muted);line-height:1.6;margin:0}
+.offerSpecs{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.offerSpecs span{border:1px solid #303831;border-radius:5px;padding:5px 7px;font-size:10px;color:#c0cbc1}
+.offerRenewal{border-top:1px solid var(--line);padding-top:14px;margin-top:18px;font-size:11px;color:var(--muted)}
+.marketplaceFootnote{font-size:11px;line-height:1.7;color:var(--muted);margin:20px 0 0}
+@media(max-width:760px){.hostingOfferGrid{grid-template-columns:1fr 1fr}.marketplaceShell .marketplaceHero{padding:70px 0 45px}.marketplaceResults{padding:18px}}
+@media(max-width:560px){.providerComparison{padding:16px}.providerQuote{padding:13px}.providerQuoteTop{flex-direction:column}.providerPrice{text-align:left;align-items:flex-start}.hostingOfferGrid{grid-template-columns:1fr}.marketplaceResults{padding:14px}.comparisonHeading h2{font-size:19px}}
