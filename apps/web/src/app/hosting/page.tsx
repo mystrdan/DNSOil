@@ -84,7 +84,7 @@ export default function HostingMarketplacePage() {
                   <p className="offerProvider">{offer.provider.name}</p>
                   <h3>{offer.productName}</h3>
                   <p className="offerPlan">{offer.termMonths % 12 === 0 ? `${offer.termMonths / 12} year(s)` : `${offer.termMonths} months`}</p>
-                  <p className="offerPrice">{money(offer.totalPriceMinor, offer.currency)}<span> / {offer.termMonths % 12 === 0 ? "term" : "term"}</span></p>
+                  <p className="offerPrice">{money(offer.totalPriceMinor, offer.currency)}<span> / {offer.termMonths} months</span></p>
                   <p className="offerPriceBreakdown">Provider {money(offer.providerPriceMinor, offer.currency)} + DNSOil {money(offer.dnsoilFeeMinor, offer.currency)} fee</p>
                   <div className="offerSpecs">
                     {storage ? <span>{storage} GB storage</span> : null}
