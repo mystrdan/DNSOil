@@ -6,6 +6,7 @@
 - [x] Fastify API with health and readiness endpoints.
 - [x] API domain syntax validation endpoint with normalization and input checks.
 - [x] API tests for domain validation and readiness behavior.
+- [x] Homepage domain-format checker with explicit syntax-only messaging.
 - [x] Optional PostgreSQL connectivity check when `DATABASE_URL` is configured.
 - [x] Transactional, advisory-lock-protected PostgreSQL migration runner.
 - [x] Next.js dashboard shell.
@@ -27,6 +28,6 @@
 - [ ] Select and verify payment provider before checkout.
 - [ ] Keep wallet deposits disabled until legal/compliance approval.
 
-Domain validation checks syntax only; it does not query registrar availability, pricing, ownership or registration eligibility. Google user provisioning is implemented but remains inactive unless both server-side internal API settings are configured; short-lived API token issuance and verification are implemented but have not been verified end-to-end against a live OAuth provider and PostgreSQL instance. No domain registration, payment, wallet deposit or DNS mutation is live. The migration runner is implemented but has not been tested against a live or disposable PostgreSQL instance yet.
+The homepage domain checker and API validation check syntax only; they do not query registrar availability, pricing, ownership or registration eligibility. Google user provisioning is implemented but remains inactive unless both server-side internal API settings are configured; short-lived API token issuance and verification are implemented but have not been verified end-to-end against a live OAuth provider and PostgreSQL instance. No domain registration, payment, wallet deposit or DNS mutation is live. The migration runner is implemented but has not been tested against a live or disposable PostgreSQL instance yet.
 
 See [Google sign-in setup](google-sign-in.md) and [API validation/readiness](api-domain-validation.md).
