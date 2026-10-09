@@ -9,6 +9,22 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://dnsoil:dnsoil@localhost:5432/dnsoil_test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: dnsoil
+          POSTGRES_PASSWORD: dnsoil
+          POSTGRES_DB: dnsoil_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dnsoil -d dnsoil_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -26,5 +42,9 @@ jobs:
         run: pnpm typecheck
       - name: Test API behavior
         run: pnpm --filter @dnsoil/api test
+      - name: Apply PostgreSQL migrations
+        run: pnpm --filter @dnsoil/api migrate
+      - name: Verify migration repeatability
+        run: pnpm --filter @dnsoil/api migrate
       - name: Build workspaces
         run: pnpm build
