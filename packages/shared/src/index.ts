@@ -2,6 +2,29 @@ export type CurrencyCode = "USD";
 
 export type DomainAvailabilityStatus = "available" | "unavailable" | "premium" | "unknown";
 
+export type CatalogServiceType = "domain-registration" | "domain-renewal" | "domain-transfer" | "hosting";
+
+export interface ProviderPriceBreakdown {
+  readonly currency: CurrencyCode;
+  readonly providerPriceMinor: string;
+  readonly dnsoilFeeBps: number;
+  readonly dnsoilFeeMinor: string;
+  readonly totalPriceMinor: string;
+}
+
+export interface ProviderCatalogOffer extends ProviderPriceBreakdown {
+  readonly id: string;
+  readonly provider: { readonly key: string; readonly name: string; readonly category: "registrar" | "hosting" };
+  readonly serviceType: CatalogServiceType;
+  readonly productKey: string;
+  readonly productName: string;
+  readonly domainTld: string | null;
+  readonly termMonths: number;
+  readonly priceValidUntil: string;
+  readonly syncedAt: string;
+  readonly attributes: Readonly<Record<string, unknown>>;
+}
+
 export interface DomainSearchResult {
   readonly domain: string;
   readonly status: DomainAvailabilityStatus;
