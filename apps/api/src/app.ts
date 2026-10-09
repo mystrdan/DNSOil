@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
+import { verifyAccessToken } from "./access-token.js";
 import { domainToASCII } from "node:url";
 import { Pool } from "pg";
 
@@ -9,6 +10,7 @@ const TOP_LEVEL_LABEL = /^(?:[a-z]{2,63}|xn--[a-z0-9-]{2,59})$/;
 export interface AppOptions {
   databaseUrl?: string;
   internalApiSecret?: string;
+  apiTokenSecret?: string;
 }
 
 function secretsMatch(expected: string, provided: string | string[] | undefined): boolean {
@@ -21,6 +23,7 @@ function secretsMatch(expected: string, provided: string | string[] | undefined)
 export function buildApp(options: AppOptions = {}): FastifyInstance {
   const databaseUrl = options.databaseUrl ?? process.env.DATABASE_URL;
   const internalApiSecret = options.internalApiSecret ?? process.env.DNSOIL_INTERNAL_API_SECRET;
+  const apiTokenSecret = options.apiTokenSecret ?? process.env.DNSOIL_API_TOKEN_SECRET;
   const pool = databaseUrl
     ? new Pool({ connectionString: databaseUrl, max: 5, connectionTimeoutMillis: 2_000 })
     : undefined;
@@ -53,6 +56,47 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
         status: "not-ready",
         checks: { database: "unavailable" },
       });
+    }
+  });
+
+
+  app.get("/v1/me", async (request, reply) => {
+    const authorization = request.headers.authorization;
+    const match = typeof authorization === "string" ? /^Bearer (.+)$/.exec(authorization) : null;
+    if (!apiTokenSecret) {
+      return reply.code(503).send({ code: "API_AUTH_NOT_CONFIGURED", message: "API access authentication is not configured." });
+    }
+    const email = match?.[1] ? verifyAccessToken(match[1], apiTokenSecret) : null;
+    if (!email) {
+      return reply.code(401).send({ code: "UNAUTHORIZED", message: "A valid, unexpired bearer token is required." });
+    }
+    if (!pool) {
+      return reply.code(503).send({ code: "DATABASE_NOT_CONFIGURED", message: "Account lookup requires PostgreSQL." });
+    }
+
+    try {
+      const result = await pool.query<{
+        id: string;
+        email: string;
+        display_name: string | null;
+        status: "active" | "suspended" | "closed";
+      }>(
+        "SELECT id, email, display_name, status FROM app_users WHERE email = $1",
+        [email],
+      );
+      const user = result.rows[0];
+      if (!user || user.status !== "active") {
+        return reply.code(403).send({ code: "ACCOUNT_NOT_ACTIVE", message: "This DNSOil account is not active." });
+      }
+      return reply.code(200).send({
+        id: user.id,
+        email: user.email,
+        displayName: user.display_name,
+        status: user.status,
+      });
+    } catch (error) {
+      request.log.error({ err: error }, "Unable to load authenticated DNSOil account");
+      return reply.code(500).send({ code: "ACCOUNT_LOOKUP_FAILED", message: "The account could not be loaded." });
     }
   });
 
