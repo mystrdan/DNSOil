@@ -1,0 +1,17 @@
+{
+  "name": "dnsoil",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.12.1",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "dev:api": "pnpm --filter @dnsoil/api dev",
+    "dev:web": "pnpm --filter @dnsoil/web dev",
+    "dev:mobile": "pnpm --filter @dnsoil/mobile start",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

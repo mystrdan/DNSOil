@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "DNSOil",
+    "slug": "dnsoil",
+    "scheme": "dnsoil",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": { "supportsTablet": true, "bundleIdentifier": "xyz.dnsoil.app" },
+    "android": { "package": "xyz.dnsoil.app" }
+  }
+}
