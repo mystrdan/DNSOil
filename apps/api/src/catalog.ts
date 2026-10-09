@@ -33,7 +33,8 @@ function safeJsonObject(value: unknown): Record<string, unknown> {
 const SENSITIVE_METADATA_KEY = /(?:secret|password|credential|api[_-]?key|access[_-]?token|refresh[_-]?token|authorization|cookie|session|private[_-]?key|sso[_-]?url)/i;
 
 function hasSensitiveKey(value: unknown, depth = 0): boolean {
-  if (depth > 8 || value === null || typeof value !== "object") return false;
+  if (depth > 8) return true;
+  if (value === null || typeof value !== "object") return false;
   if (Array.isArray(value)) return value.some((item) => hasSensitiveKey(item, depth + 1));
   return Object.entries(value as Record<string, unknown>).some(([key, child]) =>
     SENSITIVE_METADATA_KEY.test(key) || hasSensitiveKey(child, depth + 1));
