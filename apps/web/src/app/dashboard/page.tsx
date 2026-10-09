@@ -24,6 +24,15 @@ export default async function DashboardPage() {
           <span className="statusDot" />
           <div><strong>Signed in</strong><p>{session.user.email}</p></div>
         </div>
+        <section className="walletPanel" aria-labelledby="wallet-title">
+          <div className="walletPanelHeading">
+            <div><p className="eyebrow">DNSOIL WALLET</p><h2 id="wallet-title">Your wallet</h2></div>
+            <span className="walletStatus">Not enabled</span>
+          </div>
+          <p className="walletBalance">— <span>USD</span></p>
+          <p className="walletDescription">Your wallet balance and transaction history will appear here when wallet services are enabled.</p>
+          <div className="walletPanelFooter"><span>Deposits and spending are currently disabled.</span><button type="button" disabled aria-disabled="true">Add funds</button></div>
+        </section>
         <p className="note">Early build · Domain registration and DNS management are not connected yet.</p>
       </section>
     </main>
